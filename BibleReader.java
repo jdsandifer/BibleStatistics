@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BibleReader {
 
@@ -15,11 +16,17 @@ public class BibleReader {
 
     String fullText = text.readTextFile(INPUT_FILE);
 
-    String[] books = fullText.split("\\s+(?=\\s(?:\\d\\s)??[A-z]+\\s+1:1)");
-    List<String> outputs = Arrays.asList(books);
+    String[] bookSplits = fullText.split("\\s+(?=\\s(?:\\d\\s)??[A-z]+\\s+1:1)");
+    List<String> bookTexts = Arrays.asList(bookSplits);
+
+    List<Book> books = bookTexts.stream()
+                                .map(Book::new)
+                                .collect(Collectors.toList());
+
+    
 
     // Test for proper Regex parsing (worked!)
-    //text.writeTextFile(String.join("\n\nNext part:\n", outputs), OUTPUT_FILE);
+    //text.writeTextFile(bookSplits[0], OUTPUT_FILE);
   }
 
   final static String INPUT_FILE = "NETBible no markings - last books.txt";
@@ -29,7 +36,6 @@ public class BibleReader {
   String readTextFile(String fileName) throws IOException {
     Path path = Paths.get(fileName);
     List<String> lines = Files.readAllLines(path, ENCODING);
-
     return String.join("\n", lines);
   }
 

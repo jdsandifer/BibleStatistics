@@ -1,14 +1,21 @@
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
 public class Book {
   private String title;
   private String text;
-  private int wordCount;
+  private int wordCount = 0;
 
-  //TODO: Need to test this constructor for functionality.
   public Book(String rawText) {
-    String[] parts = rawText.trim()
-                            .split("(?<=^(\\d\\s)?[A-z]+)\\s+");
-    this.text = parts[0];
-    this.title = parts[1];
+    Pattern regex = Pattern.compile("^(\\d\\s)?[A-z]+");
+    Matcher matcher = regex.matcher(rawText.trim());
+    matcher.find();
+    this.title = matcher.group(0);
+    System.out.println("Title: " + this.title);
+
+    this.text = rawText.trim()
+                        .replaceFirst("^(\\d\\s)?[A-z]+\\s*", "");
+    System.out.println("Text: " + this.text);
   }
 
   public String getTitle() {
@@ -20,10 +27,11 @@ public class Book {
   }
 
   public int countWords() {
-    if(wordCount != null) {
+    if (wordCount != 0) {
       return wordCount;
     } else {
-      return;
+      // TODO: Add counting functionality.
+      return -1;
     }
   }
 }
