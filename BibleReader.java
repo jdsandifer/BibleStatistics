@@ -33,9 +33,8 @@ public class BibleReader {
 
     // Use chapter data to create verse data and sorted list
 
-
-    /* Turn books data into nice text format and write to file
     StringBuilder bookData = new StringBuilder();
+    /* Turn books data into nice text format and write to file
     books.stream()
          .forEach(b->{
               bookData.append(b.getTitle());
@@ -48,8 +47,20 @@ public class BibleReader {
     text.writeTextFile(bookData.toString(), BOOKS_OUTPUT_FILE);
     //*/
 
-    //* Turn chapter data into nice text format and write to file
+    //* Turn book data into csv and write to file
+    bookData = new StringBuilder();
+    bookData.append("Book,Word Count\r\n");
+    for (Book b : books) {
+      bookData.append(b.getTitle());
+      bookData.append(",");
+      bookData.append(b.countWords());
+      bookData.append("\r\n");
+    }
+    text.writeTextFile(bookData.toString(), BOOKS_CSV_FILE);
+    //*/
+
     StringBuilder chapterData = new StringBuilder();
+    //* Turn chapter data into nice text format and write to file
     int passage = 0;
     for (Chapter c : chapters) {
       passage++;
@@ -70,7 +81,16 @@ public class BibleReader {
     text.writeTextFile(chapterData.toString(), CHAPTER_OUTPUT_FILE);
     //*/
 
-    /* Turn chapter data into csv and write to file
+    //* Turn chapter data into csv and write to file
+    chapterData = new StringBuilder();
+    chapterData.append("Chapter,Word Count\r\n");
+    for (Chapter c : chapters) {
+      chapterData.append(c.getBookAndNumber());
+      chapterData.append(",");
+      chapterData.append(c.countWords());
+      chapterData.append("\r\n");
+    }
+    text.writeTextFile(chapterData.toString(), CHAPTER_CSV_FILE);
     //*/
 
     /* Turn verse data into nice text format and write to file
@@ -80,7 +100,9 @@ public class BibleReader {
   final static String BIBLE_INPUT_FILE =
       "NETBible no markings (formatting removed ASCII).txt";
   final static String BOOKS_OUTPUT_FILE = "Bible Books - Text & Counts.txt";
+  final static String BOOKS_CSV_FILE = "Bible Books - Counts.csv";
   final static String CHAPTER_OUTPUT_FILE = "Bible Chapters - Text & Counts.txt";
+  final static String CHAPTER_CSV_FILE = "Bible Chapters - Counts.csv";
   final static String VERSE_OUTPUT_FILE = "Bible Verses - Text & Counts.txt";
   final static String TEST_OUTPUT_FILE = "test-output.txt";
   final static Charset INPUT_ENCODING = StandardCharsets.US_ASCII;
