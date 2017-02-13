@@ -11,11 +11,11 @@ public class Book {
     Matcher matcher = regex.matcher(rawText.trim());
     matcher.find();
     this.title = matcher.group(0);
-    System.out.println("Title: " + this.title);
 
     this.text = rawText.trim()
                         .replaceFirst("^(\\d\\s)?[A-z]+\\s*", "");
-    System.out.println("Text: " + this.text);
+
+    System.out.println("Initialized " + this.title + ". (" + countWords() + ")");
   }
 
   public String getTitle() {
@@ -27,11 +27,16 @@ public class Book {
   }
 
   public int countWords() {
-    if (wordCount != 0) {
-      return wordCount;
-    } else {
-      // TODO: Add counting functionality.
-      return -1;
+    if (wordCount == 0) {
+      String[] words = this.text.replaceAll("\\d{1,3}:\\d{1,3}\\s", "")
+                                .replaceAll("\\s+", " ")
+                                .split(" ");
+      wordCount = words.length;
     }
+    return wordCount;
+  }
+
+  public String toString() {
+    return getTitle();
   }
 }

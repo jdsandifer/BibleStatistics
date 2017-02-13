@@ -14,24 +14,38 @@ public class BibleReader {
   public static void main(String[] args) throws IOException {
     BibleReader text = new BibleReader();
 
-    String fullText = text.readTextFile(INPUT_FILE);
+    String fullText = text.readTextFile(BIBLE_INPUT_FILE);
 
-    String[] bookSplits = fullText.split("\\s+(?=\\s(?:\\d\\s)??[A-z]+\\s+1:1)");
+    String[] bookSplits = fullText.split("\\s+(?=\\s(?:\\d\\s)??(?:[A-z]+\\s)+\\s*1:1)");
     List<String> bookTexts = Arrays.asList(bookSplits);
 
     List<Book> books = bookTexts.stream()
                                 .map(Book::new)
                                 .collect(Collectors.toList());
 
-    
+    books.sort((a,b)->a.countWords()-b.countWords());
+
+    System.out.println("\nPrinting book names...");
+    int totalBooks = 0;
+    for (Book b : books) {
+      totalBooks++;
+      System.out.println(b + " (" + b.countWords() + ") ["
+                           + totalBooks + "]");
+    }
+
+    String bookData = "No book data yet...";
 
     // Test for proper Regex parsing (worked!)
-    //text.writeTextFile(bookSplits[0], OUTPUT_FILE);
+    text.writeTextFile(bookData, BOOKS_OUTPUT_FILE);
   }
 
-  final static String INPUT_FILE = "NETBible no markings - last books.txt";
-  final static String OUTPUT_FILE = "output.txt";
-  final static Charset ENCODING = StandardCharsets.ISO_8859_1;
+  final static String BIBLE_INPUT_FILE =
+      "NETBible no markings (formatting removed ASCII).txt";
+  final static String BOOKS_OUTPUT_FILE = "Bible Books - Text & Counts.txt";
+  final static String CHAPTERS_OUTPUT_FILE = "Bible Chapters - Text & Counts.txt";
+  final static String VERSES_OUTPUT_FILE = "Bible Verses - Text & Counts.txt";
+  final static String TEST_OUTPUT_FILE = "test-output.txt";
+  final static Charset ENCODING = StandardCharsets.US_ASCII;
 
   String readTextFile(String fileName) throws IOException {
     Path path = Paths.get(fileName);
