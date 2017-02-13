@@ -48,10 +48,27 @@ public class BibleReader {
     text.writeTextFile(bookData.toString(), BOOKS_OUTPUT_FILE);
     //*/
 
-    /* Turn chapter data into nice text format and write to file
+    //* Turn chapter data into nice text format and write to file
+    StringBuilder chapterData = new StringBuilder();
+    int passage = 0;
+    for (Chapter c : chapters) {
+      passage++;
+      chapterData.append("Passage ");
+      chapterData.append(passage);
+      chapterData.append(":");
+      chapterData.append("\r\n");
+      chapterData.append(c.getBookAndNumber());
+      chapterData.append(" -> ");
+      chapterData.append(c.countWords());
+      chapterData.append(" words\r\n");
+      chapterData.append(c.getText()
+                          .trim()
+                          .replaceAll("\\d{1,3}:\\d{1,3}\\s", "")
+                          .replaceAll("\\s+", " "));
+      chapterData.append("\r\n\r\n");
+    }
+    text.writeTextFile(chapterData.toString(), CHAPTER_OUTPUT_FILE);
     //*/
-    chapters.forEach(c->
-        System.out.println(c.getBookAndNumber() + " -> " + c.countWords()));
 
     /* Turn chapter data into csv and write to file
     //*/
@@ -63,8 +80,8 @@ public class BibleReader {
   final static String BIBLE_INPUT_FILE =
       "NETBible no markings (formatting removed ASCII).txt";
   final static String BOOKS_OUTPUT_FILE = "Bible Books - Text & Counts.txt";
-  final static String CHAPTERS_OUTPUT_FILE = "Bible Chapters - Text & Counts.txt";
-  final static String VERSES_OUTPUT_FILE = "Bible Verses - Text & Counts.txt";
+  final static String CHAPTER_OUTPUT_FILE = "Bible Chapters - Text & Counts.txt";
+  final static String VERSE_OUTPUT_FILE = "Bible Verses - Text & Counts.txt";
   final static String TEST_OUTPUT_FILE = "test-output.txt";
   final static Charset INPUT_ENCODING = StandardCharsets.US_ASCII;
   final static Charset OUTPUT_ENCODING = StandardCharsets.UTF_8;
