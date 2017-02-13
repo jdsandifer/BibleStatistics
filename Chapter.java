@@ -1,17 +1,22 @@
 public class Chapter {
-  private String book&Number;
+  private String bookAndNumber;
   private String text;
   private int wordCount = 0;
 
   public Chapter(String book, String text) {
     String[] chapPlus = text.trim()
                             .split(":");
-    this.book&Number = book + " " + chapPlus[0];
+    this.bookAndNumber = book + " " + chapPlus[0];
     this.text = text.trim();
+    /*System.out.println("Created "
+        + getBookAndNumber()
+        + ". ("
+        + countWords()
+        + ")");*/
   }
 
-  public String getBook&Number() {
-    return book&Number;
+  public String getBookAndNumber() {
+    return bookAndNumber;
   }
 
   public String getText() {
@@ -29,6 +34,6 @@ public class Chapter {
   }
 
   public String toString() {
-    return "[" + getBook&Number() + ", " + countWords() + " words]";
+    return "[" + getBookAndNumber() + ", " + countWords() + " words]";
   }
 }

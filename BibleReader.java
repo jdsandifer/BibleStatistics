@@ -25,7 +25,11 @@ public class BibleReader {
     books.sort((a,b)->a.countWords()-b.countWords());
 
     // Use book data to create chapter data and sorted List
-
+    List<Chapter> chapters =
+        books.stream()
+             .flatMap(b->bookToChapter(b).stream())
+             .collect(Collectors.toList());
+    chapters.sort((a,b)->a.countWords()-b.countWords());
 
     // Use chapter data to create verse data and sorted list
 
@@ -46,6 +50,8 @@ public class BibleReader {
 
     /* Turn chapter data into nice text format and write to file
     //*/
+    chapters.forEach(c->
+        System.out.println(c.getBookAndNumber() + " -> " + c.countWords()));
 
     /* Turn chapter data into csv and write to file
     //*/
@@ -62,6 +68,17 @@ public class BibleReader {
   final static String TEST_OUTPUT_FILE = "test-output.txt";
   final static Charset INPUT_ENCODING = StandardCharsets.US_ASCII;
   final static Charset OUTPUT_ENCODING = StandardCharsets.UTF_8;
+
+  private static List<Chapter> bookToChapter(Book book) {
+    String bookTitle = book.getTitle();
+    String[] chapTexts = book.getText()
+                             .trim()
+                             .split("\\s+(?=\\d{1,3}:1\\s)");
+    List<Chapter> chapters = Arrays.stream(chapTexts)
+                                   .map(c->new Chapter(bookTitle, c))
+                                   .collect(Collectors.toList());
+    return chapters;
+  }
 
   String readTextFile(String fileName) throws IOException {
     Path path = Paths.get(fileName);

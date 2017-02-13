@@ -17,7 +17,7 @@ public class Book {
                        .replaceFirst(
                           "^(\\d\\s)?[A-z]+(?:\\s[A-z]+)*\\s*(?=1:1)", "");
 
-    System.out.println("Initialized " + this.title + ". (" + countWords() + ")");
+    //System.out.println("Initialized " + this.title + ". (" + countWords() + ")");
   }
 
   public String getTitle() {
