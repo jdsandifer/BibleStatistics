@@ -7,13 +7,15 @@ public class Book {
   private int wordCount = 0;
 
   public Book(String rawText) {
-    Pattern regex = Pattern.compile("^(\\d\\s)?[A-z]+");
+    //System.out.println(rawText.substring(0,100));
+    Pattern regex = Pattern.compile("^(\\d\\s)?[A-z]+(?:\\s[A-z]+)*(?=\\s*1:1)");
     Matcher matcher = regex.matcher(rawText.trim());
     matcher.find();
     this.title = matcher.group(0);
 
     this.text = rawText.trim()
-                        .replaceFirst("^(\\d\\s)?[A-z]+\\s*", "");
+                       .replaceFirst(
+                          "^(\\d\\s)?[A-z]+(?:\\s[A-z]+)*\\s*(?=1:1)", "");
 
     System.out.println("Initialized " + this.title + ". (" + countWords() + ")");
   }
@@ -37,6 +39,6 @@ public class Book {
   }
 
   public String toString() {
-    return getTitle();
+    return "[" + getTitle() + ", " + countWords() + " words]";
   }
 }

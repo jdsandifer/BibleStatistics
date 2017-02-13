@@ -13,30 +13,45 @@ public class BibleReader {
 
   public static void main(String[] args) throws IOException {
     BibleReader text = new BibleReader();
-
     String fullText = text.readTextFile(BIBLE_INPUT_FILE);
 
-    String[] bookSplits = fullText.split("\\s+(?=\\s(?:\\d\\s)??(?:[A-z]+\\s)+\\s*1:1)");
+    // Split up text into books and create sorted book object list
+    String[] bookSplits =
+        fullText.split("\\s+(?=\\s(?:\\d\\s)??(?:[A-z]+\\s)+\\s*1:1)");
     List<String> bookTexts = Arrays.asList(bookSplits);
-
     List<Book> books = bookTexts.stream()
                                 .map(Book::new)
                                 .collect(Collectors.toList());
-
     books.sort((a,b)->a.countWords()-b.countWords());
 
-    System.out.println("\nPrinting book names...");
-    int totalBooks = 0;
-    for (Book b : books) {
-      totalBooks++;
-      System.out.println(b + " (" + b.countWords() + ") ["
-                           + totalBooks + "]");
-    }
+    // Use book data to create chapter data and sorted List
 
-    String bookData = "No book data yet...";
 
-    // Test for proper Regex parsing (worked!)
-    text.writeTextFile(bookData, BOOKS_OUTPUT_FILE);
+    // Use chapter data to create verse data and sorted list
+
+
+    /* Turn books data into nice text format and write to file
+    StringBuilder bookData = new StringBuilder();
+    books.stream()
+         .forEach(b->{
+              bookData.append(b.getTitle());
+              bookData.append(" -> ");
+              bookData.append(b.countWords());
+              bookData.append(" words\r\n\r\n");
+              bookData.append(b.getText());
+              bookData.append("\r\n\r\n\r\n");
+            });
+    text.writeTextFile(bookData.toString(), BOOKS_OUTPUT_FILE);
+    //*/
+
+    /* Turn chapter data into nice text format and write to file
+    //*/
+
+    /* Turn chapter data into csv and write to file
+    //*/
+
+    /* Turn verse data into nice text format and write to file
+    //*/
   }
 
   final static String BIBLE_INPUT_FILE =
@@ -45,11 +60,12 @@ public class BibleReader {
   final static String CHAPTERS_OUTPUT_FILE = "Bible Chapters - Text & Counts.txt";
   final static String VERSES_OUTPUT_FILE = "Bible Verses - Text & Counts.txt";
   final static String TEST_OUTPUT_FILE = "test-output.txt";
-  final static Charset ENCODING = StandardCharsets.US_ASCII;
+  final static Charset INPUT_ENCODING = StandardCharsets.US_ASCII;
+  final static Charset OUTPUT_ENCODING = StandardCharsets.UTF_8;
 
   String readTextFile(String fileName) throws IOException {
     Path path = Paths.get(fileName);
-    List<String> lines = Files.readAllLines(path, ENCODING);
+    List<String> lines = Files.readAllLines(path, INPUT_ENCODING);
     return String.join("\n", lines);
   }
 
@@ -59,6 +75,6 @@ public class BibleReader {
     List<String> lines = new ArrayList<String>();
     lines.add(textToWrite);
 
-    Files.write(path, lines, ENCODING);
+    Files.write(path, lines, OUTPUT_ENCODING);
   }
 }

@@ -1,29 +1,34 @@
 public class Chapter {
   private String book&Number;
   private String text;
-  private int wordCount;
+  private int wordCount = 0;
 
   public Chapter(String book, String text) {
-    this.book&Number = book + " "
-                            + text.trim()
-                                  .split(":")
-                                  .indexOf(0);
-    this.text = text;
+    String[] chapPlus = text.trim()
+                            .split(":");
+    this.book&Number = book + " " + chapPlus[0];
+    this.text = text.trim();
   }
 
   public String getBook&Number() {
-    return this.book&Number;
+    return book&Number;
   }
 
   public String getText() {
-    return this.text;
+    return text;
   }
 
   public int countWords() {
-    if(wordCount != null) {
-      return wordCount;
-    } else {
-      return;
+    if (wordCount == 0) {
+      String[] words = this.text.replaceAll("\\d{1,3}:\\d{1,3}\\s", "")
+                                .replaceAll("\\s+", " ")
+                                .split(" ");
+      wordCount = words.length;
     }
+    return wordCount;
+  }
+
+  public String toString() {
+    return "[" + getBook&Number() + ", " + countWords() + " words]";
   }
 }
