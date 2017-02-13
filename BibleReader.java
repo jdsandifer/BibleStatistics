@@ -22,7 +22,7 @@ public class BibleReader {
     List<Book> books = bookTexts.stream()
                                 .map(Book::new)
                                 .collect(Collectors.toList());
-    books.sort((a,b)->a.countWords()-b.countWords());
+    //books.sort((a,b)->a.countWords()-b.countWords());
 
     // Use book data to create chapter data and sorted List
     List<Chapter> chapters =
@@ -47,7 +47,7 @@ public class BibleReader {
     text.writeTextFile(bookData.toString(), BOOKS_OUTPUT_FILE);
     //*/
 
-    //* Turn book data into csv and write to file
+    /* Turn book data into csv and write to file
     bookData = new StringBuilder();
     bookData.append("Book,Word Count\r\n");
     for (Book b : books) {
