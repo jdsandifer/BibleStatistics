@@ -1,19 +1,19 @@
 public class Verse {
-  private String book;
-  private String chapter&verse;
+  private String bookChapterVerse;
   private String text;
   private int wordCount = 0;
 
-  public Verse(String book, String text) {
-    this.book = book;
+  public Verse(String bookAndNumber, String text) {
+    this.bookChapterVerse = bookAndNumber;
     String[] words = text.trim()
-                         .split(" ");
-    this.chapter&verse = words[0];
+                         .split("[:\\s]+");
+    this.bookChapterVerse = bookAndNumber + ":" + words[1];
     this.text = text.trim();
+    //System.out.println(toString());
   }
 
   public String getBookChapterVerse() {
-    return book + " " + chapter&verse;
+    return bookChapterVerse;
   }
 
   public String getText() {
