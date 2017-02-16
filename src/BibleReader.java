@@ -171,6 +171,12 @@ public class BibleReader {
     return String.join("\n", lines);
   }
 
+  String readTextFile(String fileName, Charset encoding) throws IOException {
+    Path path = Paths.get(fileName);
+    List<String> lines = Files.readAllLines(path, encoding);
+    return String.join("\n", lines);
+  }
+
   void writeTextFile(String textToWrite, String fileName) throws IOException {
     Path path = Paths.get(fileName);
 
