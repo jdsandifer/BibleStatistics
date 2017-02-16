@@ -10,6 +10,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class BibleReader {
+  final static String BIBLE_INPUT_FILE =
+      "NETBible no markings (formatting removed ASCII).txt";
+  final static String BOOK_OUTPUT_FILE = "Bible Books - Text & Counts.txt";
+  final static String BOOK_CSV_FILE = "Bible Books - Counts.csv";
+  final static String CHAPTER_OUTPUT_FILE = "Bible Chapters - Text & Counts.txt";
+  final static String CHAPTER_CSV_FILE = "Bible Chapters - Counts.csv";
+  final static String VERSE_OUTPUT_FILE = "Bible Verses - Text & Counts.txt";
+  final static String VERSE_CSV_FILE = "Bible Verses - Counts.csv";
+  final static Charset INPUT_ENCODING = StandardCharsets.US_ASCII;
+  final static Charset OUTPUT_ENCODING = StandardCharsets.UTF_8;
 
   public static void main(String[] args) throws IOException {
     BibleReader text = new BibleReader();
@@ -22,7 +32,6 @@ public class BibleReader {
     List<Book> books = bookTexts.stream()
                                 .map(Book::new)
                                 .collect(Collectors.toList());
-
 
     // Use book data to create chapter data List
     List<Chapter> chapters =
@@ -133,17 +142,6 @@ public class BibleReader {
     text.writeTextFile(verseData.toString(), VERSE_CSV_FILE);
     //*/
   }
-
-  final static String BIBLE_INPUT_FILE =
-      "NETBible no markings (formatting removed ASCII).txt";
-  final static String BOOK_OUTPUT_FILE = "Bible Books - Text & Counts.txt";
-  final static String BOOK_CSV_FILE = "Bible Books - Counts.csv";
-  final static String CHAPTER_OUTPUT_FILE = "Bible Chapters - Text & Counts.txt";
-  final static String CHAPTER_CSV_FILE = "Bible Chapters - Counts.csv";
-  final static String VERSE_OUTPUT_FILE = "Bible Verses - Text & Counts.txt";
-  final static String VERSE_CSV_FILE = "Bible Verses - Counts.csv";
-  final static Charset INPUT_ENCODING = StandardCharsets.US_ASCII;
-  final static Charset OUTPUT_ENCODING = StandardCharsets.UTF_8;
 
   private static List<Chapter> bookToChapters(Book book) {
     String bookTitle = book.getTitle();
