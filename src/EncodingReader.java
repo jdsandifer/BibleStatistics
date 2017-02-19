@@ -3,6 +3,9 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
+// This test seems to be a lost cause. Seems like you can only
+// guess at the encoding by analyzing character frequencies and/or
+// present samples to the user to have them pick the correct one.
 public class EncodingReader {
   final static String TEST_FILE = "..\\input\\test-file.txt";
   final static Charset[] ENCODINGS = {StandardCharsets.UTF_8,
