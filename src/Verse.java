@@ -4,7 +4,6 @@ public class Verse {
   private int wordCount = 0;
 
   public Verse(String bookAndNumber, String text) {
-    this.bookChapterVerse = bookAndNumber;
     String[] words = text.trim()
                          .split("[:\\s]+");
     this.bookChapterVerse = bookAndNumber + ":" + words[1];
