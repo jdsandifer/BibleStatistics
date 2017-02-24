@@ -20,14 +20,7 @@ public class BibleStats {
   public static void main(String[] args) throws IOException {
     BibleReader text = new BibleReader();
     String fullText = text.readTextFile(PATH_TO_INPUT + BIBLE_INPUT_FILE);
-
-    // Split up text into books and create book object list
-    String[] bookSplits =
-        fullText.split("\\s+(?=\\s(?:\\d\\s)??(?:[A-z]+\\s)+\\s*1:1)");
-    List<String> bookTexts = Arrays.asList(bookSplits);
-    List<Book> books = bookTexts.stream()
-                                .map(Book::new)
-                                .collect(Collectors.toList());
+    List<Book> books = BibleParser.parseBooks(fullText);
 
     // Use book data to create chapter data List
     List<Chapter> chapters =
