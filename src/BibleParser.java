@@ -11,5 +11,19 @@ public class BibleParser {
     return bookTexts.stream()
                     .map(Book::new)
                     .collect(Collectors.toList());
-    }
+  }
+
+  public static List<Chapter> parseChapters(List<Book> books) {
+    // Use book data list to create chapter data List
+    return books.stream()
+                .flatMap(b->BibleReader.bookToChapters(b).stream())
+                .collect(Collectors.toList());
+  }
+
+  public static List<Verse> parseVerses(List<Chapter> chapters) {
+    // Use chapter data list to create verse data list
+    return chapters.stream()
+                   .flatMap(c->BibleReader.chapterToVerses(c).stream())
+                   .collect(Collectors.toList());
+  }
 }

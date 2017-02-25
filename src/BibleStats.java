@@ -6,10 +6,6 @@ import java.util.stream.Collectors;
 public class BibleStats {
   // TODO: These would probably work better as command line arguments,
   // or a config file for easier modification down the road.
-  final static String PATH_TO_INPUT = "../input/";
-  final static String PATH_TO_OUTPUT = "../output/";
-  final static String BIBLE_INPUT_FILE =
-      "NETBible no markings (formatting removed ASCII).txt";
   final static String BOOK_OUTPUT_FILE = "Bible Books - Text & Counts.txt";
   final static String BOOK_CSV_FILE = "Bible Books - Counts.csv";
   final static String CHAPTER_OUTPUT_FILE = "Bible Chapters - Text & Counts.txt";
@@ -17,22 +13,18 @@ public class BibleStats {
   final static String VERSE_OUTPUT_FILE = "Bible Verses - Text & Counts.txt";
   final static String VERSE_CSV_FILE = "Bible Verses - Counts.csv";
 
+  static String PATH_TO_INPUT = "../input/";
+  static String PATH_TO_OUTPUT = "../output/";
+  static String BIBLE_INPUT_FILE =
+      "NETBible no markings (formatting removed ASCII).txt";
+
   public static void main(String[] args) throws IOException {
+    readArgs(args);
     BibleReader text = new BibleReader();
     String fullText = text.readTextFile(PATH_TO_INPUT + BIBLE_INPUT_FILE);
     List<Book> books = BibleParser.parseBooks(fullText);
-
-    // Use book data to create chapter data List
-    List<Chapter> chapters =
-        books.stream()
-             .flatMap(b->BibleReader.bookToChapters(b).stream())
-             .collect(Collectors.toList());
-
-    // Use chapter data to create verse data and sorted list
-    List<Verse> verses =
-        chapters.stream()
-                .flatMap(c->BibleReader.chapterToVerses(c).stream())
-                .collect(Collectors.toList());
+    List<Chapter> chapters = BibleParser.parseChapters(books);
+    List<Verse> verses = BibleParser.parseVerses(chapters);
 
     StringBuilder bookData = new StringBuilder();
     books.sort((a,b)->a.countWords()-b.countWords());
@@ -136,5 +128,25 @@ public class BibleStats {
     text.writeTextFile(verseData.toString(),
                        PATH_TO_OUTPUT + VERSE_CSV_FILE);
     //*/
+  }
+
+  static void readArgs(String[] args) {
+    show("Reading command line arguments...");
+    for (int a = 0; a < args.length; a++) {
+      if (args[a].equals("-i")  && (a + 1) < args.length) {
+        BIBLE_INPUT_FILE = args[++a];
+        show("Input file set to: " + BIBLE_INPUT_FILE);
+      } else if (args[a].equals("-ip") && (a + 1) < args.length) {
+        PATH_TO_INPUT = args[++a];
+        show("Input path set to: " + PATH_TO_INPUT);
+      } else if (args[a].equals("-op") && (a + 1) < args.length) {
+        PATH_TO_OUTPUT = args[++a];
+        show("Output path set to: " + PATH_TO_OUTPUT);
+      }
+    }
+  }
+
+  static void show(String message) {
+    System.out.println(message);
   }
 }
