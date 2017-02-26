@@ -3,7 +3,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class BibleStats {
+public final class BibleStats {
   // TODO: These would probably work better as command line arguments,
   // or a config file for easier modification down the road.
   final static String BOOK_OUTPUT_FILE = "Bible Books - Text & Counts.txt";
@@ -13,138 +13,75 @@ public class BibleStats {
   final static String VERSE_OUTPUT_FILE = "Bible Verses - Text & Counts.txt";
   final static String VERSE_CSV_FILE = "Bible Verses - Counts.csv";
 
-  static String PATH_TO_INPUT = "../input/";
-  static String PATH_TO_OUTPUT = "../output/";
-  static String BIBLE_INPUT_FILE =
+  static String inputFolder = "../input/";
+  static String outputFolder = "../output/";
+  static String bibleInputFile =
       "NETBible no markings (formatting removed ASCII).txt";
+
+  static boolean shouldCreateBookFiles = false;
+  static boolean shouldCreateChapterFiles = false;
+  static boolean shouldCreateVerseFiles = false;
 
   public static void main(String[] args) throws IOException {
     readArgs(args);
-    BibleReader text = new BibleReader();
-    String fullText = text.readTextFile(PATH_TO_INPUT + BIBLE_INPUT_FILE);
+    BibleReader bibleIO = new BibleReader();
+    String fullText = bibleIO.readTextFile(inputFolder + bibleInputFile);
     List<Book> books = BibleParser.parseBooks(fullText);
     List<Chapter> chapters = BibleParser.parseChapters(books);
     List<Verse> verses = BibleParser.parseVerses(chapters);
 
-    StringBuilder bookData = new StringBuilder();
-    books.sort((a,b)->a.countWords()-b.countWords());
-    /* Turn books data into nice text format and write to file
-    books.stream()
-         .forEach(b->{
-              bookData.append(b.getTitle());
-              bookData.append(" -> ");
-              bookData.append(b.countWords());
-              bookData.append(" words\r\n\r\n");
-              bookData.append(b.getText());
-              bookData.append("\r\n\r\n\r\n");
-            });
-    text.writeTextFile(bookData.toString(),
-                       PATH_TO_OUTPUT + BOOK_OUTPUT_FILE);
-    //*/
-
-    /* Turn book data into csv and write to file
-    bookData = new StringBuilder();
-    bookData.append("Book,Word Count\r\n");
-    for (Book b : books) {
-      bookData.append(b.getTitle());
-      bookData.append(",");
-      bookData.append(b.countWords());
-      bookData.append("\r\n");
+    if (shouldCreateBookFiles) {
+      books.sort((a,b)->a.countWords()-b.countWords());
+      bibleIO.writeTextFile(FileFormatter.formatBookText(books),
+                         outputFolder + BOOK_OUTPUT_FILE);
+      bibleIO.writeTextFile(FileFormatter.formatBookCSV(books),
+                         outputFolder + BOOK_CSV_FILE);
     }
-    text.writeTextFile(bookData.toString(),
-                       PATH_TO_OUTPUT + BOOK_CSV_FILE);
-    //*/
 
-    StringBuilder chapterData = new StringBuilder();
-    chapters.sort((a,b)->a.countWords()-b.countWords());
-    /* Turn chapter data into nice text format and write to file
-    int passage = 0;
-    for (Chapter c : chapters) {
-      passage++;
-      chapterData.append("Passage ");
-      chapterData.append(passage);
-      chapterData.append(":");
-      chapterData.append("\r\n");
-      chapterData.append(c.getBookAndNumber());
-      chapterData.append(" -> ");
-      chapterData.append(c.countWords());
-      chapterData.append(" words\r\n");
-      chapterData.append(c.getText()
-                          .trim()
-                          .replaceAll("\\d{1,3}:\\d{1,3}\\s", "")
-                          .replaceAll("\\s+", " "));
-      chapterData.append("\r\n\r\n");
+    if (shouldCreateChapterFiles) {
+      chapters.sort((a,b)->a.countWords()-b.countWords());
+      bibleIO.writeTextFile(FileFormatter.formatChapterText(chapters),
+                         outputFolder + CHAPTER_OUTPUT_FILE);
+      bibleIO.writeTextFile(FileFormatter.formatChapterCSV(chapters),
+                         outputFolder + CHAPTER_CSV_FILE);
     }
-    text.writeTextFile(chapterData.toString(),
-                       PATH_TO_OUTPUT + CHAPTER_OUTPUT_FILE);
-    //*/
 
-    /* Turn chapter data into csv and write to file
-    chapterData = new StringBuilder();
-    chapterData.append("Chapter,Word Count\r\n");
-    for (Chapter c : chapters) {
-      chapterData.append(c.getBookAndNumber());
-      chapterData.append(",");
-      chapterData.append(c.countWords());
-      chapterData.append("\r\n");
+    if (shouldCreateVerseFiles) {
+      verses.sort((a,b)->a.countWords()-b.countWords());
+      bibleIO.writeTextFile(FileFormatter.formatVerseText(verses),
+                         outputFolder + VERSE_OUTPUT_FILE);
+      bibleIO.writeTextFile(FileFormatter.formatVerseCSV(verses),
+                         outputFolder + VERSE_CSV_FILE);
     }
-    text.writeTextFile(chapterData.toString(),
-                       PATH_TO_OUTPUT + CHAPTER_CSV_FILE);
-    //*/
-
-    StringBuilder verseData = new StringBuilder();
-    verses.sort((a,b)->a.countWords()-b.countWords());
-    /* Turn verse data into nice text format and write to file
-    int verse = 0;
-    for (Verse v : verses) {
-      verse++;
-      verseData.append("Verse ");
-      verseData.append(verse);
-      verseData.append(":");
-      verseData.append("\r\n");
-      verseData.append(v.getBookChapterVerse());
-      verseData.append(" -> ");
-      verseData.append(v.countWords());
-      verseData.append(" words\r\n");
-      verseData.append(v.getText()
-                        .trim()
-                        .replaceAll("\\d{1,3}:\\d{1,3}\\s", "")
-                        .replaceAll("\\s+", " "));
-      verseData.append("\r\n\r\n");
-    }
-    text.writeTextFile(verseData.toString(),
-                       PATH_TO_OUTPUT + VERSE_OUTPUT_FILE);
-    //*/
-
-    /* Turn verse data into csv and write to file
-    verseData = new StringBuilder();
-    verseData.append("Verse,Word Count\r\n");
-    for (Verse v : verses) {
-      verseData.append(v.getBookChapterVerse());
-      verseData.append(",");
-      verseData.append(v.countWords());
-      verseData.append("\r\n");
-    }
-    text.writeTextFile(verseData.toString(),
-                       PATH_TO_OUTPUT + VERSE_CSV_FILE);
-    //*/
   }
 
   static void readArgs(String[] args) {
     show("Reading command line arguments...");
     for (int a = 0; a < args.length; a++) {
       if (args[a].equals("-i")  && (a + 1) < args.length) {
-        BIBLE_INPUT_FILE = args[++a];
-        show("Input file set to: " + BIBLE_INPUT_FILE);
+        bibleInputFile = args[++a];
+        show("Input file set to: " + bibleInputFile);
       } else if (args[a].equals("-ip") && (a + 1) < args.length) {
-        PATH_TO_INPUT = args[++a];
-        show("Input path set to: " + PATH_TO_INPUT);
+        inputFolder = args[++a];
+        show("Input path set to: " + inputFolder);
       } else if (args[a].equals("-op") && (a + 1) < args.length) {
-        PATH_TO_OUTPUT = args[++a];
-        show("Output path set to: " + PATH_TO_OUTPUT);
+        outputFolder = args[++a];
+        show("Output path set to: " + outputFolder);
+      } else if (args[a].equals("books")) {
+        shouldCreateBookFiles = true;
+        show("Going to create the book files!");
+      } else if (args[a].equals("chapters")) {
+        shouldCreateChapterFiles = true;
+        show("Going to create the chapter files!");
+      } else if (args[a].equals("verses")) {
+        shouldCreateVerseFiles = true;
+        show("Going to create the verse files!");
       }
     }
   }
+
+  // TODO: Create generic List sorter by word counts? (DRY)
+  // Would replace <list>.sort(a,b->etc.) above
 
   static void show(String message) {
     System.out.println(message);

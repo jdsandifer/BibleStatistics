@@ -4,7 +4,7 @@ import java.util.stream.Collectors;
 
 public class BibleParser {
   public static List<Book> parseBooks(String fullText) {
-    // Split up text into books and create book object list
+    // Split up text into books and create book data list
     String[] bookSplits =
         fullText.split("\\s+(?=\\s(?:\\d\\s)??(?:[A-z]+\\s)+\\s*1:1)");
     List<String> bookTexts = Arrays.asList(bookSplits);
