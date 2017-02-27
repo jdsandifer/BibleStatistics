@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public final class FileFormatter {
+  //TODO: This code compiles. Now it needs unit tests.
   public static String formatBookText(List<Book> books) {
     // Turn books data into nice text format and return as string
     StringBuilder bookData = new StringBuilder();

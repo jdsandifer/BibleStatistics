@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public final class BibleStats {
-  // TODO: These would probably work better as command line arguments,
-  // or a config file for easier modification down the road.
   final static String BOOK_OUTPUT_FILE = "Bible Books - Text & Counts.txt";
   final static String BOOK_CSV_FILE = "Bible Books - Counts.csv";
   final static String CHAPTER_OUTPUT_FILE = "Bible Chapters - Text & Counts.txt";
@@ -33,25 +31,25 @@ public final class BibleStats {
     if (shouldCreateBookFiles) {
       books.sort((a,b)->a.countWords()-b.countWords());
       bibleIO.writeTextFile(FileFormatter.formatBookText(books),
-                         outputFolder + BOOK_OUTPUT_FILE);
+                            outputFolder + BOOK_OUTPUT_FILE);
       bibleIO.writeTextFile(FileFormatter.formatBookCSV(books),
-                         outputFolder + BOOK_CSV_FILE);
+                            outputFolder + BOOK_CSV_FILE);
     }
 
     if (shouldCreateChapterFiles) {
       chapters.sort((a,b)->a.countWords()-b.countWords());
       bibleIO.writeTextFile(FileFormatter.formatChapterText(chapters),
-                         outputFolder + CHAPTER_OUTPUT_FILE);
+                            outputFolder + CHAPTER_OUTPUT_FILE);
       bibleIO.writeTextFile(FileFormatter.formatChapterCSV(chapters),
-                         outputFolder + CHAPTER_CSV_FILE);
+                            outputFolder + CHAPTER_CSV_FILE);
     }
 
     if (shouldCreateVerseFiles) {
       verses.sort((a,b)->a.countWords()-b.countWords());
       bibleIO.writeTextFile(FileFormatter.formatVerseText(verses),
-                         outputFolder + VERSE_OUTPUT_FILE);
+                            outputFolder + VERSE_OUTPUT_FILE);
       bibleIO.writeTextFile(FileFormatter.formatVerseCSV(verses),
-                         outputFolder + VERSE_CSV_FILE);
+                            outputFolder + VERSE_CSV_FILE);
     }
   }
 
