@@ -1,7 +1,7 @@
+@ECHO OFF
+
 REM Drag a .java file onto this batch file to
 REM compile it and it's test file, and run the test.
-
-@ECHO OFF
 
 SETLOCAL
 
