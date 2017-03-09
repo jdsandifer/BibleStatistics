@@ -13,7 +13,7 @@ SET "testName=%className%Test"
 
 @ECHO ON
 javac %fileName%
-javac -cp .;junit-4.12.jar %testFileName%
+javac -cp .;junit-4.12.jar;hamcrest-core-1.3.jar %testFileName%
 java -cp .;junit-4.12.jar;hamcrest-core-1.3.jar org.junit.runner.JUnitCore %testName%
 @ECHO OFF
 
