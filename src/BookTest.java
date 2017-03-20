@@ -14,14 +14,14 @@ public class BookTest {
   }
 
   @Test
-  public void getTitleReturnsTitle() {
-    String result = book.getTitle();
+  public void Title_method_returns_the_title() {
+    String result = book.title();
     assertEquals("Book should return title.", "Not A Book", result);
   }
 
   @Test
-  public void getTextReturnsText() {
-    String result = book.getText();
+  public void Text_method_returns_the_text() {
+    String result = book.text();
     assertEquals("Book should return text.",
                  "1:150 This is text in the book. 1:151 I am.\n"
                  + "1:152 This is more text in the book.\n"
@@ -30,8 +30,8 @@ public class BookTest {
   }
 
   @Test
-  public void countWordsReturnsWordCount() {
-    int result = book.countWords();
+  public void WordCount_method_returns_the_correct_count() {
+    int result = book.wordCount();
     assertEquals("Book should return word count.", 23, result);
   }
 }

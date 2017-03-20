@@ -9,21 +9,21 @@ public class Chapter {
     this.bookAndNumber = book + " " + chapPlus[0];
     this.text = text.trim();
     /*System.out.println("Created "
-        + getBookAndNumber()
+        + bookAndNumber()
         + ". ("
-        + countWords()
+        + wordCount()
         + ")");*/
   }
 
-  public String getBookAndNumber() {
+  public String bookAndNumber() {
     return bookAndNumber;
   }
 
-  public String getText() {
+  public String text() {
     return text;
   }
 
-  public int countWords() {
+  public int wordCount() {
     if (wordCount == 0) {
       String[] words = this.text.replaceAll("\\d{1,3}:\\d{1,3}\\s", "")
                                 .replaceAll("\\s+", " ")

@@ -8,7 +8,7 @@ import org.junit.Test;
 
 public class BibleParserTest {
   @Test
-  public void parseBooksReturnsBookList() {
+  public void ParseBooks_returns_the_book_list() {
     List<Book> expectedList = new ArrayList<Book>();
     Book a = new Book("ABook\n1:1 The first verse.");
     Book b = new Book("AnotherBook\n1:1 Another first verse.");
@@ -21,7 +21,7 @@ public class BibleParserTest {
   }
 
   @Test
-  public void parseChaptersReturnsChapterList() {
+  public void ParseChapters_method_returns_the_chapter_list() {
     List<Book> bookList = new ArrayList<Book>();
     Book a = new Book("ABook\n1:1 The first verse.");
     Book b = new Book("AnotherBook\n1:1 Another first verse.");
@@ -40,7 +40,7 @@ public class BibleParserTest {
   }
 
   @Test
-  public void parseVersesReturnsVerseList() {
+  public void ParseVerses_returns_the_verse_list() {
     List<Chapter> chapterList = new ArrayList<Chapter>();
     Chapter a = new Chapter("ABook", "1:1 The first verse.");
     Chapter b = new Chapter("AnotherBook", "1:1 Another first verse.");

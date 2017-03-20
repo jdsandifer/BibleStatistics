@@ -5,8 +5,9 @@ import java.util.stream.Collectors;
 public class BibleParser {
   public static List<Book> parseBooks(String fullText) {
     // Split up text into books and create book data list
-    String[] bookSplits =
-        fullText.split("\\s+(?=\\s(?:\\d\\s)??(?:[A-z]+\\s)+\\s*1:1)");
+    String regexToSplitTextByBooks =
+        "\\s+(?=\\s(?:\\d\\s)??(?:[A-z]+\\s)+\\s*1:1)";
+    String[] bookSplits = fullText.split(regexToSplitTextByBooks);
     List<String> bookTexts = Arrays.asList(bookSplits);
     return bookTexts.stream()
                     .map(Book::new)
@@ -16,22 +17,23 @@ public class BibleParser {
   public static List<Chapter> parseChapters(List<Book> books) {
     // Use book data list to create chapter data List
     return books.stream()
-                .flatMap(b->bookToChapters(b).stream())
+                .flatMap(eachBook->bookToChapters(eachBook).stream())
                 .collect(Collectors.toList());
   }
 
   public static List<Verse> parseVerses(List<Chapter> chapters) {
     // Use chapter data list to create verse data list
     return chapters.stream()
-                   .flatMap(c->chapterToVerses(c).stream())
+                   .flatMap(eachChapter->chapterToVerses(eachChapter).stream())
                    .collect(Collectors.toList());
   }
 
   static List<Chapter> bookToChapters(Book book) {
-    String bookTitle = book.getTitle();
-    String[] chapTexts = book.getText()
+    String bookTitle = book.title();
+    String regexToSplitTextByChapters = "\\s+(?=\\d{1,3}:1\\s)";
+    String[] chapTexts = book.text()
                              .trim()
-                             .split("\\s+(?=\\d{1,3}:1\\s)");
+                             .split(regexToSplitTextByChapters);
     List<Chapter> chapters = Arrays.stream(chapTexts)
                                    .map(c->new Chapter(bookTitle, c))
                                    .collect(Collectors.toList());
@@ -39,12 +41,13 @@ public class BibleParser {
   }
 
   static List<Verse> chapterToVerses(Chapter chapter) {
-    String chapterInfo = chapter.getBookAndNumber();
-    String[] verseTexts = chapter.getText()
+    String chapterInfo = chapter.bookAndNumber();
+    String regexToSplitTextByVerses = "\\s+(?=\\d{1,3}:\\d{1,3})";
+    String[] verseTexts = chapter.text()
                                  .trim()
-                                 .split("\\s+(?=\\d{1,3}:\\d{1,3})");
+                                 .split(regexToSplitTextByVerses);
     List<Verse> verses = Arrays.stream(verseTexts)
-                                   .map(v->new Verse(chapterInfo, v))
+                                   .map(eachVerse->new Verse(chapterInfo, eachVerse))
                                    .collect(Collectors.toList());
     return verses;
   }

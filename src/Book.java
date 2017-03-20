@@ -17,18 +17,18 @@ public class Book {
                        .replaceFirst(
                           "^(\\d\\s)?[A-z]+(?:\\s[A-z]+)*\\s*(?=1:1)", "");
 
-    //System.out.println("Initialized " + this.title + ". (" + countWords() + ")");
+    //System.out.println("Initialized " + title() + ". (" + wordCount() + ")");
   }
 
-  public String getTitle() {
+  public String title() {
     return title;
   }
 
-  public String getText() {
+  public String text() {
     return text;
   }
 
-  public int countWords() {
+  public int wordCount() {
     if (wordCount == 0) {
       String[] words = this.text.replaceAll("\\d{1,3}:\\d{1,3}\\s", "")
                                 .replaceAll("\\s+", " ")
