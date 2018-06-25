@@ -79,7 +79,9 @@ public final class BibleStats {
   }
 
   // TODO: Create generic List sorter by word counts? (DRY)
-  // Would replace <list>.sort(a,b->etc.) above
+  // Would replace <list>.sort(a,b->etc.) above with a function.
+  // WONTFIX: This was a good idea, but more for the sake of
+  // pretty code. The project is done and may not be used again.
 
   static void show(String message) {
     System.out.println(message);
